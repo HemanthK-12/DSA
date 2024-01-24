@@ -1,50 +1,57 @@
-#include<stdio.h>
-int digits(char n[])
-{
-	int len=0;
-	for(int i=0;i<1000;i++)
-	{
-		if(n[i]=='\0')
-		{
-			len=i;
-			break;
-		}
-	}
-	return len;
-}
+/*
+Input
+The first line contains a single non-negative integer Num1 represented as a string. The second
+line contains a single non-negative integer Num2 represented as a string. (0 ≤Num2 ≤Num1 ≤
+101000).
+
+Output
+Print a single string containing the product of the two long numbers provided to you. Note that
+do not add any leading zeroes and don't use string.h and gmp library.
+*/
+#include <stdio.h>
 int main()
 {
-	char a[1000],b[1000];
-
-	scanf("%s",a);
-	scanf("%s",b);
+	char num1[1000], num2[1000];
+	scanf("%s",num1);
+	scanf("%s",num2);
 	
-	int len_a=digits(a);
-	int len_b=digits(b);
+	int len1=0;
+	int len2=0;
 	
-	char product[(len_a*len_a)];
-
-	int pro=0,lastdigit=0;
-
-	for(int i=len_a-1;i>=0;i--)
+	while(num1[len1]!='\0')
 	{
-		pro+=(a[i]*b[0])-(48*(a[i]+b[0]))+2304;
-		lastdigit=(pro)%10;
-		product[(len_a*len_a)+i-(len_a)]=lastdigit+'0';
-		if(pro>9)
-			pro=((pro-lastdigit)/10);
-		else
-			pro=0;
-		if(i==0 && pro>0)
-			product[(len_a*len_a)-len_a-1]=pro;
+		len1++;
 	}
-
-	for(int i=0;i<(len_a*len_a)-1;i++)
+	while(num2[len2]!='\0')
 	{
-		printf("%c",product[i]);
+		len2++;
 	}
+	
+	int prod[2001];
+	
+	for(int i=0; i<len1; i++)
+	{
+		for(int j=0; j<len2; j++)
+		{
+			int dig1=num1[len1-i-1]-'0';
+			int dig2=num2[len2-j-1]-'0';
+			
+			prod[i+j]+=dig1*dig2;
+			prod[i+j+1]+=prod[i+j]/10;
+			prod[i+j]=prod[i+j]%10;
+		}	
+	}
+	
+	int prodlen=len1+len2;
+	while(prod[prodlen-1]==0 && prodlen>1)
+	{
+		prodlen--;
+	}
+	char result[prodlen];
+	for(int i=prodlen-1; i>=0; i--)
+	{
+		result[i]=prod[i]+'0';
+		printf("%c",result[i]);
+	}
+	//printf("%s\n",result);
 }
-
-
-		
-

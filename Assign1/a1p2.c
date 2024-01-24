@@ -1,5 +1,14 @@
-#include <stdio.h>
+/*
+Input
+The first line contains a single non-negative integer Num1 represented as a string. The second
+line contains a single non-negative integer Num2 represented as a string. (0 ≤Num2 ≤Num1 ≤
+10100000).Note: You can assume that the length of the string N is positive and a power of 2.
+Output
+Print a single string containing the product of the two long numbers provided to you. Note that
+do not add any leading zeroes.Use Karatsuba's algorithm and don't use string.h and gmp library.
+*/
 
+#include <stdio.h>
 int stringLength(char str[])
 {
     for(int i=0;i<100001;i++)
