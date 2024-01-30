@@ -1,54 +1,54 @@
 #include <stdio.h>
-
-int findPivot(int arr[], int low, int high) {
-    if (high < low) return -1;
-    if (high == low) return low;
-
-    int mid = (low + high) / 2;
-    if (mid < high && arr[mid] > arr[mid + 1])
-        return mid;
-    if (mid > low && arr[mid] < arr[mid - 1])
-        return (mid - 1);
-    if (arr[low] >= arr[mid])
-        return findPivot(arr, low, mid - 1);
-    return findPivot(arr, mid + 1, high);
+int pivot(int a[],int n1,int n2){
+    int start=n1;
+    int end=n2-1;
+    int mid;
+    while(start<end){
+        mid=(start+end)/2;
+        if(a[mid]>=a[0]){
+            start=mid+1;
+        }
+        else{
+            end=mid;
+        }
+       
 }
-
-int binarySearch(int arr[], int low, int high, int key) {
-    if (high < low)
-        return -1;
-
-    int mid = (low + high) / 2;
-    if (key == arr[mid])
-        return mid;
-    if (key > arr[mid])
-        return binarySearch(arr, (mid + 1), high, key);
-    return binarySearch(arr, low, (mid - 1), key);
+ return start;
 }
+int binary(int a[],int n1,int n2){
+    int start=n1;
+    int end=n2-1;
+    while(start<=end){
+        int mid=start+(end-start)/2;
+        if(a[mid]==7){
+            return mid;
+        }
+        else if(a[mid]<7){
+            start=mid+1;
+        }
+        else{
+            end=mid-1;
+        }
+    }
+    return -1;
 
-int pivotedBinarySearch(int arr[], int n, int key) {
-    int pivot = findPivot(arr, 0, n - 1);
-
-    if (pivot == -1)
-        return binarySearch(arr, 0, n - 1, key);
-
-    if (arr[pivot] == key)
-        return pivot;
-    if (arr[0] <= key)
-        return binarySearch(arr, 0, pivot - 1, key);
-    return binarySearch(arr, pivot + 1, n - 1, key);
 }
-
-int main() {
+int main(){
     int n;
-    scanf("%d", &n);
-    int arr[n - 1];
-    for(int i = 0; i < n - 1; i++)
-        scanf("%d", &arr[i]);
-
-    int key = 7;
-    int index = pivotedBinarySearch(arr, n - 1, key);
-    printf("%d", index);
-
-    return 0;
+    scanf("%d",&n);
+    int k=n-1;
+    int arr[k];
+    for(int i=0;i<k;i++){
+        scanf("%d",&arr[i]);
+    }
+    int p1=pivot(arr,0,n);
+    if(binary(arr,0,p1)){
+        printf("%d",binary(arr,0,p1));
+    }
+    else if(binary(arr,p1,n)){
+        printf("%d",binary(arr,p1,n));
+    }
+    else{
+        printf("%d",-1);
+    }
 }
