@@ -1,0 +1,346 @@
+Q A)#include <stdio.h>
+int binary(int a[],int n,int data){
+    int start=0;
+    int end=n-1;
+    while(end>start){
+    int mid=(start+end)/2;
+    if (data==a[mid]){
+        return mid;
+    }
+    else if(data>a[mid]){
+        start=mid+1;
+    }
+    else if(data<a[mid]){
+        end=mid-1;
+    }
+
+    }
+    if(start>end){
+        return -1;
+    }
+
+}
+
+int main(){
+    int n,data;
+    scanf("%d %d",&n,&data);
+    int a[n];
+    for(int i=1;i<=n;i++){
+        scanf("%d",&a[i]);
+    }
+    int ans=binary(a,n,data);
+    printf("%d",ans);
+}
+QB)#include<stdio.h>
+int peakindex(int a[],int n){
+    int start=0;
+    int end=n-1;
+    int mid;
+    while(start<end){
+        mid=(start+end)/2;
+        if(a[mid]<a[mid+1]){
+            start=mid+1;
+        }
+        else
+        end=mid;
+    }
+    return start+1;
+}
+int main(){
+    int n;
+    scanf("%d",&n);
+    int a[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&a[i]);
+    }
+    int ans=peakindex(a,n);
+    printf("%d",ans);
+}
+QC)#include <stdio.h>
+int pivot(int a[],int n1,int n2){
+    int start=n1;
+    int end=n2-1;
+    int mid;
+    while(start<end){
+        mid=(start+end)/2;
+        if(a[mid]>=a[0]){
+            start=mid+1;
+        }
+        else{
+            end=mid;
+        }
+       
+}
+ return start;
+}
+int binary(int a[],int n1,int n2){
+    int start=n1;
+    int end=n2-1;
+    while(start<=end){
+        int mid=start+(end-start)/2;
+        if(a[mid]==7){
+            return mid;
+        }
+        else if(a[mid]<7){
+            start=mid+1;
+        }
+        else{
+            end=mid-1;
+        }
+    }
+    return -1;
+
+}
+int main(){
+    int n;
+    scanf("%d",&n);
+    int k=n-1;
+    int arr[k];
+    for(int i=0;i<k;i++){
+        scanf("%d",&arr[i]);
+    }
+    int p1=pivot(arr,0,n);
+    if(binary(arr,0,p1)){
+        printf("%d",binary(arr,0,p1));
+    }
+    else if(binary(arr,p1,n)){
+        printf("%d",binary(arr,p1,n));
+    }
+    else{
+        printf("%d",-1);
+    }
+}
+QD)#include <stdio.h>
+int sqrt_int(int n){
+    int start=0;
+    int end=n;
+    long mid;
+    int ans;
+    while(start<=end){
+        mid=start+(end-start)/2;
+        if((mid*mid)==n){
+            return mid;
+        }
+        if((mid*mid)<n){
+            ans=mid;
+            start=mid+1;
+        }
+        else{
+            end=mid-1;
+        }
+    }
+    return ans;
+
+}
+double precise(int n,int pre,int temp){
+    double factor=1;
+    double ans=temp;
+    for(int i=0;i<pre;i++){
+        factor=factor/10;
+        for(double j=temp;j*j<=n;j=j+factor){
+            ans=j;
+
+        }
+    }
+    return ans;
+
+}
+int main(){
+    int n;
+    scanf("%d",&n);
+    int temp=sqrt_int(n);
+    printf("%lf",precise(n,6,temp));
+}
+QE)#include <stdio.h>
+int matrixBinary(int a[][100],int n,int target){
+    int start=0;
+    int end=(n*n)-1;
+    while(start<=end){
+        int mid=start+(end-start)/2;
+        int digit=a[mid/n][mid%n];
+        if(digit==target){
+            return 1;
+        }
+        else if(digit<target){
+           start=mid+1;
+        }
+        else{
+            end=mid-1;
+        }
+
+    }
+    return -1;
+
+}
+int main(){
+    int n,target;
+    scanf("%d %d",&n,&target);
+    int a[100][100];
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            scanf("%d",&a[i][j]);
+        }
+    }
+   if(matrixBinary(a,n,target)==-1){
+    printf("NO");
+
+   }
+    else{
+        printf("YES");
+    }
+
+
+}
+
+QF)#include<stdio.h>
+int arraysum(int arr[],int p,int q){
+    int sum=0;
+    for(int i=p;i<=q;i++){
+        sum=sum+arr[i];
+    }
+    return sum;
+}
+
+int main(){
+    int n,q;
+    
+    scanf("%d %d",&n,&q);
+    int arr[n];
+    for(int i=1;i<=n;i++){
+        scanf("%d",&arr[i]);
+    }
+    int arr2[q],arr3[q];
+    for(int i=0;i<q;i++){
+        scanf("%d %d",&arr2[i],&arr3[i]);
+    }
+    for(int i=0;i<q;i++){
+        printf("%d\n",arraysum(arr,arr2[i],arr3[i]));
+    }
+
+}
+QG)#include<stdio.h>
+int max(int a,int b){
+    if(a>b){
+        return a;
+    }
+    else{
+        return b;
+    }
+}
+int maxi_sum(int a[],int n){
+    int sum=0;
+    int max_sum=a[0];
+    for(int i=0;i<n;i++){
+        sum+=a[i];
+        max_sum=max(max_sum,sum);
+        if(sum<0){
+            sum=0;
+        }
+    }
+    return max_sum;
+
+}
+int main(){
+    int n;
+    scanf("%d",&n);
+    int a[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&a[i]);
+    }
+    printf("%d",maxi_sum(a,n));
+}
+QH)#include <stdio.h>
+int difference(int a[],int n){
+    int max=0;
+    for(int i=0;i<n;i++){
+        for(int j=i+1;j<n;j++){
+            
+            int diff=a[j]-a[i];
+            if(diff>max){
+                max=diff;
+            }
+
+        }
+    }
+    return max;
+
+}
+int main(){
+    int n;
+    scanf("%d",&n);
+    int a[n];
+    for(int i=0;i<n;i++){
+        scanf("%d",&a[i]);
+    }
+    printf("%d",difference(a,n));
+}
+QI)#include <stdio.h>
+int max_prof(int a[],int n){
+    if(n==1){
+        return 0;
+    }
+    int max_profit=0;
+    for(int i=1;i<n;i++){
+        int profit=a[i]-a[i-1];
+        if(profit>0){
+            max_profit+=profit;
+        }
+    }
+return max_profit;
+}
+int main(){
+    int n;
+    scanf("%d",&n);
+    int a[n];
+    for(int i=0;i<n;i++){
+    scanf("%d",&a[i]);
+    }
+    printf("%d",max_prof(a,n));
+}
+QJ)#include <stdio.h>
+void spiral(int a[][1000],int n){
+    int startrow=0;
+    int endrow=n-1;
+    int startcol=0;
+    int endcol=n-1;
+    int static count=1;
+    while(startrow<=endrow && startcol<=endcol){
+        for(int i=startcol;i<=endcol;i++){
+            a[startrow][i]=count;
+            count++;
+        }
+        startrow++;
+        for(int i=startrow;i<=endrow;i++){
+            a[i][endcol]=count;
+            count++;
+        }
+        endcol--;
+        for(int i=endcol;i>=startcol;i--){
+            a[endrow][i]=count;
+            count++;
+        }
+        endrow--;
+        for(int i=endrow;i>=startrow;i--){
+            a[i][startcol]=count;
+            count++;
+        }
+        startcol++;
+        
+
+
+    }
+}
+
+int main(){
+    int n;
+    scanf("%d",&n);
+    int a[1000][1000];
+    spiral(a,n);
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            printf("%d ",a[i][j]);
+        }
+        printf("\n");
+    }
+
+}
