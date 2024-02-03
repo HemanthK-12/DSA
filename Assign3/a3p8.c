@@ -10,6 +10,7 @@ void bin_store(long long int n, int binary[][60], int row)
 }
 int main() {
   long long int n,k;
+  //since highest we can give is 60 bits and upper limit of long long int is 4 bits
   scanf("%lld %lld", &n,&k);
   int binary[n][60];
   for (int i = 0; i < n; i++)
