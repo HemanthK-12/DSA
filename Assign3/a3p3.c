@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+//This uses two pointer approach
 void reverse(char* begin, char* end) {
     char temp;
     while (begin < end) {
