@@ -17,7 +17,8 @@ int maxweight(int n, int a[])
     return maxSum;
 }
 
-int main() {
+int main()
+{
     int n;
     scanf("%d", &n);
     int a[n];
