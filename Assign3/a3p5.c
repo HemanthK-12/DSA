@@ -10,18 +10,16 @@ array with merged elements in sorted order.
 #include<stdio.h>
 void mergeArrays(int a[], int b[], int n, int m)
 {
-    int i = 0, j = 0, k = 0;
-
-    while (i<n && j <m) {
+    int i = 0, j = 0;
+    while (i<n && j <m)
+    {
         if (a[i] < b[j])
             printf("%d ",a[i++]);
         else
             printf("%d ",b[j++]);
     }
-
     while (i < n)
         printf("%d ",a[i++]);
-
     while (j < m)
         printf("%d ",b[j++]);
 }
