@@ -1,31 +1,19 @@
 #include <stdio.h>
-
-void bin_store(long long int n, int binary[][60], int row)
+#define llint long long int
+int main()
 {
-  for (int i =59; i >= 0;i--)
+  int n,k;
+  scanf("%d %d",&n,&k);
+  llint arr[n];
+  for(int i=0;i<n;i++)
+    scanf("%lld",&arr[i]);
+  for(int i=0;i<n;i++)
   {
-    binary[row][i] = n % 2;
-    n /= 2;
-  }
-}
-int main() {
-  long long int n,k;
-  //since highest we can give is 60 bits and upper limit of long long int is 4 bits
-  scanf("%lld %lld", &n,&k);
-  int binary[n][60];
-  for (int i = 0; i < n; i++)
-    for (int j = 0; j <60; j++)
-      binary[i][j] = 0;
-  long long int number[n];
-  for (int i = 0; i < n; i++)
-    scanf("%lld", &number[i]);
-  for (int i = 0; i < n; i++)
-    bin_store(number[i], binary, i);
-  for (int i = 0; i < n; i++)
-  {
-    for (int j = 0; j <60; j++)
-      printf("%d", binary[i][j]);
-    printf("\n");
+    for(llint j=0;j<=59;j++)
+    {
+    llint a=(arr[i])&((llint)1<<j);
+    a=(a==0)?0:1;
+    
   }
   return 0;
 }
