@@ -1,3 +1,12 @@
+/*
+Input
+The first line contains three integers n, k and x (1 ≤ k ≤ n ≤ 105, 1 ≤ x ≤ 109).
+The second line contains n integers which represent the cursed energies of the cursed spirits in
+sequence a (−109 ≤ ai ≤ 109).
+Your solution should run in O(n) time complexity.
+Output
+number of groups of k numbers whose average>=x.
+*/
 #include<stdio.h>
 //This uses sliding window
 int main() {

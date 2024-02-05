@@ -1,3 +1,13 @@
+/*
+Input
+The first line contains an integer n (1 ≤ n ≤ 105).
+The second line contains a string of length n consisting of only lowercase English alphabet and
+whitespace.
+Your solution should run in O(n) time complexity.
+Bonus: Can you solve it using only constant extra space?
+Output
+A string whose order of vowels are reversed.
+*/
 #include<stdio.h>
 int main()
 {

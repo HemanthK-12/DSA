@@ -1,3 +1,11 @@
+/*
+Input
+First line contains an integer n (1 ≤ n ≤ 105).
+Second line contains n integers in an array a (1 ≤ ai ≤ 109).
+Your solution should run in O(n) time complexity.
+Output
+The max sum where both sums are equal
+*/
 #include <stdio.h>
 //This also uses two pointer approach
 int maxweight(int n, int a[])

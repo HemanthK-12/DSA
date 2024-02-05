@@ -1,3 +1,11 @@
+/*
+Input
+First line contains an integer n (1 ≤ n ≤ 105).
+Second line contains n positive integers in an array a (1 ≤ ai ≤ 109).
+Your solution should run in O(npmax(ai)) time complexity.
+Output
+The product of all non-primes modulo (10^9+7)
+*/
 #include <stdio.h>
 #include <math.h>
 

@@ -1,3 +1,11 @@
+/*
+Input
+The first line contains an integer n (1 ≤ n ≤ 105).
+The second line contains a string of length n consisting of only lowercase English alphabet.
+Your solution should run in O(n) time complexity.
+Output
+The maximum number of consecutive alphabets without repetition.
+*/
 #include <stdio.h>
 
 int longestUniqueSubstr(char* str,int n)
@@ -8,16 +16,18 @@ int longestUniqueSubstr(char* str,int n)
     int visited[3000];
 
     for (int i = 0; i < 3000; i++)
-    {
         visited[i] = -1;
-    }
+    
     visited[str[0]] = 0;
-    for (int i = 1; i < n; i++) {
+
+    for (int i = 1; i < n; i++)
+    {
         prev_index = visited[str[i]];
 
         if (prev_index == -1 || i - cur_len > prev_index)
             cur_len++;
-        else {
+        else
+        {
             if (cur_len > max_len)
                 max_len = cur_len;
 
