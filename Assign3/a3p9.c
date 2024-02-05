@@ -7,7 +7,6 @@ Output
 The product of all non-primes modulo (10^9+7)
 */
 #include <stdio.h>
-#include <math.h>
 
 int isPrime(int n)
 {

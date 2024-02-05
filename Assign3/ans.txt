@@ -1,11 +1,4 @@
-1)/*
-Input
-The first line contains an integer n (1 ≤ n ≤ 3 ∗ 103).
-The second line contains a string of length n consisting of only lowercase English alphabet.
-Your solution should run in O(n2) time complexity
-Output
-The length of the longest substring which is also a palindrome.
-*/
+1)
 #include <stdio.h>
 
 int longestPalSubstr(char *str,int n)
@@ -55,14 +48,7 @@ int main() {
     return 0;
 }
 
-2)/*
-Input
-The first line contains an integer n (1 ≤ n ≤ 105).
-The second line contains a string of length n consisting of only lowercase English alphabet.
-Your solution should run in O(n) time complexity.
-Output
-The maximum number of consecutive alphabets without repetition.
-*/
+2)
 #include <stdio.h>
 
 int longestUniqueSubstr(char* str,int n)
@@ -108,15 +94,7 @@ int main() {
     printf("%d",longestUniqueSubstr(str,n));
     return 0;
 }
-3)/*
-Input
-The first line contains an integer n (1 ≤ n ≤ 105).
-The second line contains a string of length n consisting of only lowercase English alphabet and
-whitespace.
-Your solution should run in O(n) time complexity.
-Output
-A string of length n ,where every word is reversed.
-*/
+3)
 #include <stdio.h>
 //This uses two pointer approach
 void reverse(char* begin, char* end) {
@@ -152,16 +130,7 @@ int main() {
     printf("%s", s);
     return 0;
 }
-4)/*
-Input
-The first line contains an integer n (1 ≤ n ≤ 105).
-The second line contains a string of length n consisting of only lowercase English alphabet and
-whitespace.
-Your solution should run in O(n) time complexity.
-Bonus: Can you solve it using only constant extra space?
-Output
-A string whose order of vowels are reversed.
-*/
+4)
 #include<stdio.h>
 int main()
 {
@@ -187,15 +156,7 @@ int main()
     }
 }
 
-5)/*
-Input
-The first line contains two integers n and m (1 ≤ n, m ≤ 105).
-The second line contains n integers of the first array (1 ≤ a1 ≤ a2 ... ≤ an−1 ≤ an ≤ 109).
-The third line contains n integers of the second array (1 ≤ b1 ≤ b2 ... ≤ bn−1 ≤ bn ≤ 109).
-Your solution should run in O(n+m) time complexity.
-Output
-array with merged elements in sorted order.
-*/
+5)
 #include<stdio.h>
 void mergeArrays(int a[], int b[], int n, int m)
 {
@@ -227,15 +188,7 @@ int main()
 
 }
 
-6)/*
-Input
-The first line contains three integers n, k and x (1 ≤ k ≤ n ≤ 105, 1 ≤ x ≤ 109).
-The second line contains n integers which represent the cursed energies of the cursed spirits in
-sequence a (−109 ≤ ai ≤ 109).
-Your solution should run in O(n) time complexity.
-Output
-number of groups of k numbers whose average>=x.
-*/
+6)
 #include<stdio.h>
 //This uses sliding window
 int main() {
@@ -260,14 +213,7 @@ int main() {
     return 0;
 }
 
-7)/*
-Input
-First line contains an integer n (1 ≤ n ≤ 105).
-Second line contains n integers in an array a (1 ≤ ai ≤ 109).
-Your solution should run in O(n) time complexity.
-Output
-The max sum where both sums are equal
-*/
+7)
 #include <stdio.h>
 //This also uses two pointer approach
 int maxweight(int n, int a[])
@@ -298,18 +244,61 @@ int main()
     return 0;
 }
 
-8)
+8)#include <stdio.h>
+int n, k;
+long long a[100005], satisfied[60];
+int current, max;
 
-9)/*
-Input
-First line contains an integer n (1 ≤ n ≤ 105).
-Second line contains n positive integers in an array a (1 ≤ ai ≤ 109).
-Your solution should run in O(npmax(ai)) time complexity.
-Output
-The product of all non-primes modulo (10^9+7)
-*/
+int max_clients()
+{
+    int i, j;
+    for (i = 0; i < k; i++)
+    {
+        for (j = 0; j < 60; j++)
+        {
+            if (a[i] & (1LL << j))
+            {
+                if (satisfied[j] == 0)
+                    current++;
+                satisfied[j]++;
+            }
+        }
+    }
+
+    max = current;
+
+    for (i = k; i < n; i++)
+    {
+        for (j = 0; j < 60; j++)
+        {
+            if (a[i - k] & (1LL << j))
+            {
+                satisfied[j]--;
+                if (satisfied[j] == 0)
+                    current--;
+            }
+            if (a[i] & (1LL << j))
+            {
+                if (satisfied[j] == 0)
+                    current++;
+                satisfied[j]++;
+            }
+        }
+        if (current > max)
+            max = current;
+    }
+    return max;
+}
+int main() {
+    scanf("%d %d", &n, &k);
+    for (int i = 0; i < n; i++) 
+        scanf("%lld", &a[i]);
+    printf("%d\n", max_clients());
+    return 0;
+}
+
+9)
 #include <stdio.h>
-#include <math.h>
 
 int isPrime(int n)
 {
@@ -356,3 +345,33 @@ int main() {
 
     return 0;
 } 
+
+10)#include<stdio.h>
+long long int modulus=1000000007;
+long long int power(long long int base, long long int exponent)
+{
+    if (exponent == 0)
+        return 1;
+    else if (exponent % 2 == 0)
+        return power((base * base) % modulus, exponent / 2) % modulus;
+    else
+        return (base * power((base * base) % modulus, (exponent - 1) / 2)) % modulus;
+}
+int main()
+{
+    int n;
+    long long int pro=1;
+    scanf("%d",&n);
+    long long int a[n],b[n];
+    for(int i=0;i<n;i++)
+        scanf("%lld",&a[i]);
+    for(int i=0;i<n;i++)
+        scanf("%lld",&b[i]);
+    for(int i = 0; i < n; i++)
+    {
+        long long int product=((long long int)(power(a[i],b[i])));
+        pro=(pro*product)%modulus;
+    }
+    printf("%lld",pro);
+    return 0;
+}

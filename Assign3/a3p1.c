@@ -10,7 +10,7 @@ The length of the longest substring which is also a palindrome.
 
 int longestPalSubstr(char *str,int n)
 {
-    int maxLength = 1, start = 0;
+    int max = 1, start = 0;
     int table[n][n];
 
     for (int i = 0; i < n; ++i)
@@ -23,7 +23,7 @@ int longestPalSubstr(char *str,int n)
         {
             table[i][i + 1] = 1;
             start = i;
-            maxLength = 2;
+            max = 2;
         }
     }
 
@@ -35,15 +35,15 @@ int longestPalSubstr(char *str,int n)
             if (table[i + 1][j - 1] && str[i] == str[j])
             {
                 table[i][j] = 1;
-                if (k > maxLength)
+                if (k > max)
                 {
                     start = i;
-                    maxLength = k;
+                    max = k;
                 }
             }
         }
     }
-    return maxLength;
+    return max;
 }
 
 int main() {

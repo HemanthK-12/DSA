@@ -1,22 +1,53 @@
-#include <stdio.h>
-#define llint long long int
-int main()
-{
-  int n,k;
-  scanf("%d %d",&n,&k);
-  llint arr[n];
-  for(int i=0;i<n;i++)
-    scanf("%lld",&arr[i]);
 
-  for(int i=0;i<n;i++)
-  {
-    for(llint j=59;j>=0;j--)
+#include <stdio.h>
+int n, k;
+long long a[100005], satisfied[60];
+int current, max;
+
+int max_clients()
+{
+    int i, j;
+    for (i = 0; i < k; i++)
     {
-    llint a=(arr[i])&((llint)1<<j);
-    a=(a==0)?0:1;
-    printf("%lld",a);
+        for (j = 0; j < 60; j++)
+        {
+            if (a[i] & (1LL << j))
+            {
+                if (satisfied[j] == 0)
+                    current++;
+                satisfied[j]++;
+            }
+        }
     }
-    printf("\n");
-  }
-  return 0;
+
+    max = current;
+
+    for (i = k; i < n; i++)
+    {
+        for (j = 0; j < 60; j++)
+        {
+            if (a[i - k] & (1LL << j))
+            {
+                satisfied[j]--;
+                if (satisfied[j] == 0)
+                    current--;
+            }
+            if (a[i] & (1LL << j))
+            {
+                if (satisfied[j] == 0)
+                    current++;
+                satisfied[j]++;
+            }
+        }
+        if (current > max)
+            max = current;
+    }
+    return max;
+}
+int main() {
+    scanf("%d %d", &n, &k);
+    for (int i = 0; i < n; i++) 
+        scanf("%lld", &a[i]);
+    printf("%d\n", max_clients());
+    return 0;
 }
