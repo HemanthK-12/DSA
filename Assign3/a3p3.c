@@ -21,12 +21,12 @@ void reverse(char* begin, char* end) {
 void reverseWords(char* s) {
     char* word_begin = s;
     char* temp = s;
-
-    while (*temp) {
+    while (*temp)
+    {
         temp++;
-        if (*temp == '\0') {
+        if (*temp == '\0')
             reverse(word_begin, temp - 1);
-        } else if (*temp == ' ') {
+        else if (*temp == ' '){
             reverse(word_begin, temp - 1);
             word_begin = temp + 1;
         }

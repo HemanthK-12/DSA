@@ -6,25 +6,21 @@ int current, max;
 
 int max_clients()
 {
-    int i, j;
-    for (i = 0; i < k; i++)
+    for (int i = 0; i < k; i++)
     {
-        for (j = 0; j < 60; j++)
+        for (int j = 0; j < 60; j++)
         {
             if (a[i] & (1LL << j))
             {
-                if (satisfied[j] == 0)
-                    current++;
+                if (satisfied[j] == 0) current++;
                 satisfied[j]++;
             }
         }
     }
-
     max = current;
-
-    for (i = k; i < n; i++)
+    for (int i = k; i < n; i++)
     {
-        for (j = 0; j < 60; j++)
+        for (int j = 0; j < 60; j++)
         {
             if (a[i - k] & (1LL << j))
             {

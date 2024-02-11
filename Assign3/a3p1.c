@@ -8,49 +8,41 @@ The length of the longest substring which is also a palindrome.
 */
 #include <stdio.h>
 
-int longestPalSubstr(char *str,int n)
-{
-    int max = 1, start = 0;
-    int table[n][n];
-
-    for (int i = 0; i < n; ++i)
-        for(int j=0;j<n;j++)
-            table[i][j] =(i==j)?1:0;
-
-    for (int i = 0; i < n - 1; ++i)
-    {
-        if (str[i] == str[i + 1])
-        {
-            table[i][i + 1] = 1;
-            start = i;
-            max = 2;
-        }
-    }
-
-    for (int k = 3; k <= n; ++k)
-    {
-        for (int i = 0; i < n - k + 1; ++i)
-        {
-            int j = i + k - 1;
-            if (table[i + 1][j - 1] && str[i] == str[j])
-            {
-                table[i][j] = 1;
-                if (k > max)
-                {
-                    start = i;
-                    max = k;
-                }
+int max_palindrome(char s[],int n){
+    int start=0;
+    int end=1;
+    for(int i=1;i<n;i++){
+        int l=i-1;
+        int h=i;
+        while(l>=0 && h<n && s[h]==s[l]){
+            if(h-l+1>end){
+                start=l;
+                end=h-l+1;
             }
+            l--;
+            h++;
         }
     }
-    return max;
+    for(int i=1;i<n;i++){
+        int l=i-1;
+        int h=i+1;
+        while(l>=0 && h<n &&s[h]==s[l]){
+            if(h-l+1>end){
+                start=l;
+                end=h-l+1;
+            }
+            l--;
+            h++;
+        }
+    }
+    return end;
 }
 
-int main() {
+int main(){
     int n;
-    scanf("%d", &n);
-    char str[n];
-    scanf("%s", str);
-    printf("%d\n", longestPalSubstr(str,n));
-    return 0;
+    scanf("%d",&n);
+    char s[n];
+    scanf("%s",s);
+    printf("%d",max_palindrome(s,n));
+
 }
