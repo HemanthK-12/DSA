@@ -1,16 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAXN 20
-#define MAXK 10000
-
-int n, k, a[MAXN + 1], t[MAXN + 1], dp[MAXN + 1][MAXK + 1];
-
+int n, k, a[21], t[21], dp[21][10001];
 int max(int a, int b)
-{
-    return a > b ? a : b;
-}
-
+{return a > b ? a : b;}
 int solve(int i, int j)
 {
     if (i > n)
@@ -22,8 +15,8 @@ int solve(int i, int j)
     else
         return dp[i][j] = max(solve(i + 1, j), solve(i + 1, j - t[i]) + a[i]);
 }
-
-int main() {
+int main()
+{
     scanf("%d %d", &n, &k);
     for (int i = 1; i <= n; i++)
         scanf("%d", &a[i]);

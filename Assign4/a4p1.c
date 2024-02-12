@@ -10,14 +10,15 @@ void printNumber(long long num, int idx) {
         return;
     printNumber(num / 1000, idx + 1);
     int rem = num % 1000;
-    if (rem / 100 > 0) {
+    if (rem / 100 > 0)
         printf("%s hundred ", ones[rem / 100]);
-    }
     rem %= 100;
-    if (rem >= 20) {
+    if (rem >= 20)
+    {
         printf("%s ", tens[rem / 10]);
         rem %= 10;
-    } else if (rem >= 10) {
+    }
+    else if (rem >= 10) {
         printf("%s ", teens[rem % 10]);
         rem = 0;
     }
