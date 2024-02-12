@@ -1,42 +1,43 @@
 #include <stdio.h>
 
-int main() {
-    
-    int n, a, b;
-    scanf("%d %d %d", &n, &a, &b);
-    
-    int arr[b + 1];
-    for (int i = 0; i < b + 1; i++) {
-        arr[i] = 0;
-    }
-    
+int main()
+{
+    int n, NumK, NumO;
+    scanf("%d %d %d", &n, &NumK, &NumO);
+    char String[n + 1];
+    String[n] = '\0'; // Corrected the null terminator
+    int Dist = NumK / (NumO + 1);
+    int excess = NumK % (NumO + 1);
     int i = 0;
-    while (a) {
-        arr[i % (b + 1)]++;
-        a--;    
-        i++;
-    }
-    
-    char str[n + 1];
-    
-    int start = 0;
-    int numberofOs = b;
-    
-    for (int j = 0; j < b + 1; j++) {
-        while (arr[j]) {
-            str[start] = 'K';
-            arr[j]--;
-            start++;
+    int D = Dist;
+    while (excess != 0)
+    {
+        while (D--)
+        {
+            String[i++] = 'K';
+            NumK--;
         }
-        
-        if (numberofOs) {
-            str[start] = 'O';
-            start++;
-            numberofOs--;
-        }
+        String[i++]='K';
+        String[i++] = 'O';
+        NumO--;
+        D = Dist;
+        excess--;
     }
-    
-    printf("%s", str);
-    
+    while (i < n)
+    {
+        while (D--)
+        {
+            String[i++] = 'K';
+            NumK--;
+        }
+        if (i < n)
+        {
+            String[i++] = 'O';
+            NumO--;
+        }
+        D = Dist;
+    }
+    printf("%s\n", String);
     return 0;
 }
+

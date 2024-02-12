@@ -37,7 +37,6 @@ int solveSudoku(int grid[9][9], int row, int col)
     }
     return 0;
 }
-
 int main()
 {
     int grid[9][9];

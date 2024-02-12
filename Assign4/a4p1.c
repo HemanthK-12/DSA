@@ -4,8 +4,8 @@ char *ones[] = {"", "one", "two", "three", "four", "five", "six", "seven", "eigh
 char *teens[] = {"ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
 char *tens[] = {"", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
 char *thousands[] = {"", "thousand", "million", "billion"};
-
-void printNumber(long long num, int idx) {
+void printNumber(long long num, int idx)
+{
     if (num == 0)
         return;
     printNumber(num / 1000, idx + 1);
@@ -18,7 +18,8 @@ void printNumber(long long num, int idx) {
         printf("%s ", tens[rem / 10]);
         rem %= 10;
     }
-    else if (rem >= 10) {
+    else if (rem >= 10)
+    {
         printf("%s ", teens[rem % 10]);
         rem = 0;
     }
@@ -27,8 +28,8 @@ void printNumber(long long num, int idx) {
     if (idx > 0)
         printf("%s ", thousands[idx]);
 }
-
-int main() {
+int main()
+{
     long long n;
     scanf("%lld", &n);
     if(n==0)
