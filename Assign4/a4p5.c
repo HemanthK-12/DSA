@@ -4,7 +4,8 @@
 
 #define ll long long
 
-ll solve(ll k, ll l, ll r, char *s, ll index, ll temp) {
+ll solve(ll k, ll l, ll r, char *s, ll index, ll temp)
+{
     if (index == strlen(s))
     {
         if (k == 0 && temp>0 && temp<=r) 

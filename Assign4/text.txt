@@ -1,0 +1,405 @@
+1)
+#include <stdio.h>
+
+char *ones[] = {"", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+char *teens[] = {"ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
+char *tens[] = {"", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+char *thousands[] = {"", "thousand", "million", "billion"};
+void printNumber(long long num, int idx)
+{
+    if (num == 0)
+        return;
+    printNumber(num / 1000, idx + 1);
+    int rem = num % 1000;
+    if (rem / 100 > 0)
+        printf("%s hundred ", ones[rem / 100]);
+    rem %= 100;
+    if (rem >= 20)
+    {
+        printf("%s ", tens[rem / 10]);
+        rem %= 10;
+    }
+    else if (rem >= 10)
+    {
+        printf("%s ", teens[rem % 10]);
+        rem = 0;
+    }
+    if (rem > 0)
+        printf("%s ", ones[rem]);
+    if (idx > 0)
+        printf("%s ", thousands[idx]);
+}
+int main()
+{
+    long long n;
+    scanf("%lld", &n);
+    if(n==0)
+    printf("zero");
+    else
+    printNumber(n, 0);
+    printf("\n");
+    return 0;
+}
+
+2)
+#include <stdio.h>
+#include <limits.h>
+
+int result = INT_MAX;
+int min(int maxie, int result)
+{
+    if (maxie < result)
+        result = maxie;
+    return result;
+}
+void beauty(int ind, int a[], int n, int cookies[], int k)
+{
+    if (ind >= n)
+    {
+        int maxie = INT_MIN;
+        for (int i = 0; i < k; i++)
+            if (cookies[i] > maxie)
+                maxie = cookies[i];
+        result = min(maxie, result);
+        return;
+    }
+    int cookie = a[ind];
+    for (int i = 0; i < k; i++)
+    {
+        cookies[i] += cookie;
+        beauty(ind + 1, a, n, cookies, k);
+        cookies[i] -= cookie;
+    }
+}
+int main()
+{
+    int n, k;
+    scanf("%d %d", &n, &k);
+    int a[n];
+    for (int i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+    int ind = 0;
+    int cookies[k];
+    for (int i = 0; i < k; i++)
+        cookies[i] = 0;
+    beauty(ind, a, n, cookies, k);
+    printf("%d", result);
+    return 0;
+}
+
+3)
+#include <stdio.h>
+#include <string.h>
+
+int n, k, a[21], t[21], dp[21][10001];
+int max(int a, int b)
+{return a > b ? a : b;}
+int solve(int i, int j)
+{
+    if (i > n)
+        return 0;
+    if (dp[i][j] != -1)
+        return dp[i][j];
+    if (j < t[i])
+        return dp[i][j] = solve(i + 1, j);
+    else
+        return dp[i][j] = max(solve(i + 1, j), solve(i + 1, j - t[i]) + a[i]);
+}
+int main()
+{
+    scanf("%d %d", &n, &k);
+    for (int i = 1; i <= n; i++)
+        scanf("%d", &a[i]);
+    for (int i = 1; i <= n; i++)
+        scanf("%d", &t[i]);
+    memset(dp, -1, sizeof(dp));
+    printf("%d\n", solve(1, k));
+    return 0;
+}
+
+4)
+#include <stdio.h>
+
+int isValid(int grid[9][9], int row, int col, int num)
+{
+    for (int x = 0; x < 9; x++)
+        if (grid[row][x] == num)
+            return 0;
+    for (int x = 0; x < 9; x++)
+        if (grid[x][col] == num)
+            return 0;
+    int startRow = row - row % 3, startCol = col - col % 3;
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            if (grid[i + startRow][j + startCol] == num)
+                return 0;
+    return 1;
+}
+int solveSudoku(int grid[9][9], int row, int col)
+{
+    if (row == 8 && col == 9)
+        return 1;
+    if (col == 9)
+    {
+        row++;
+        col = 0;
+    }
+    if (grid[row][col] > 0)
+        return solveSudoku(grid, row, col + 1);
+    for (int num = 1; num <= 9; num++) { 
+        if (isValid(grid, row, col, num))
+        {
+            grid[row][col] = num;
+            if (solveSudoku(grid, row, col + 1))
+                return 1;
+        }
+        grid[row][col] = 0;
+    }
+    return 0;
+}
+int main()
+{
+    int grid[9][9];
+    for(int i=0;i<9;i++)
+        for(int j=0;j<9;j++)
+            scanf("%d",&grid[i][j]);
+
+    if (solveSudoku(grid, 0, 0))
+        for (int i = 0; i < 9; i++)
+        {
+            for (int j = 0; j < 9; j++)
+                printf("%d ", grid[i][j]);
+            printf("\n");
+        }
+    else
+        printf("No solution exists");
+    return 0;
+}
+
+5)
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define ll long long
+
+ll solve(ll k, ll l, ll r, char *s, ll index, ll temp)
+{
+    if (index == strlen(s))
+    {
+        if (k == 0 && temp>0 && temp<=r) 
+            return 1;
+        return 0;
+    }
+    ll take = 0, notTake = 0;
+    if (s[index] == '?')
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            if (index == 0 && i == 0)
+                continue;
+            if (i <= k)
+            {
+                temp = temp * 10 + i;
+                take += solve(k - i, l, r, s, index + 1, temp);
+                temp = temp / 10;
+            }
+        }
+    }
+    else
+    {
+        int i = s[index] - '0';
+        temp = temp * 10 + i;
+        notTake += solve(k, l, r, s, index + 1, temp);
+        temp = temp / 10;
+    }
+    return take + notTake;
+}
+
+int main()
+{
+    ll n, k, l, r;
+    scanf("%lld %lld %lld %lld", &n, &k, &l, &r);
+    char *s = (char *)malloc((n + 1) * sizeof(char));
+    scanf("%s", s);
+    for (ll i = 0; i < n; i++)
+    {
+        char ch = s[i];
+        if (ch >= '0' && ch <= '9')
+        {
+            int num = ch - '0';
+            k = k - num;
+        }
+    }
+    printf("%lld\n", solve(k, l, r, s, 0, 0));
+    free(s);
+}
+
+6)
+#include <stdio.h>
+#include <string.h>
+
+int n, k, a[21], arr[21][26];
+
+int solve(int i, int sum)
+{
+    if (sum == k)
+        return 1;
+    if (i > n || sum > k)
+        return 0;
+    if (arr[i][sum] != -1)
+        return arr[i][sum];
+    arr[i][sum] = solve(i, sum + a[i]) + solve(i + 1, sum);
+    return arr[i][sum];
+}
+
+int main()
+{
+    scanf("%d %d", &n, &k);
+    for (int i = 1; i <= n; i++)
+        scanf("%d", &a[i]);
+    memset(arr, -1, sizeof(arr));
+    printf("%d\n", solve(1, 0));
+    return 0;
+}
+
+7)
+#include <stdio.h>
+#include <string.h>
+
+
+int gcd(int a, int b) {
+    return b == 0 ? a : gcd(b, a % b);
+}
+
+int main() {
+    char a[100000];
+    char b[100000];
+    scanf("%[^\n]",a);
+    scanf(" %[^\n]",b);
+    char lcm[200000];
+    int lenA = strlen(a), lenB = strlen(b), lenLCM = lenA * lenB / gcd(lenA, lenB);
+    for (int i = 0; i < lenLCM; i++)
+        lcm[i] = (i < lenA) ? a[i % lenA] : b[i % lenB];
+    lcm[lenLCM] = '\0';
+    for (int i = 0; i < lenLCM; i++)
+    {
+        if (lcm[i] != lcm[i % lenA] || lcm[i] != lcm[i % lenB])
+        {
+            printf("-1\n");
+            return 0;
+        }
+    }
+    printf("%s\n", lcm);
+    return 0;
+}
+
+8)
+#include <stdio.h>
+
+int main()
+{
+    int n, NumK, NumO;
+    scanf("%d %d %d", &n, &NumK, &NumO);
+    char String[n + 1];
+    String[n] = '\0'; // Corrected the null terminator
+    int Dist = NumK / (NumO + 1);
+    int excess = NumK % (NumO + 1);
+    int i = 0;
+    int D = Dist;
+    while (excess != 0)
+    {
+        while (D--)
+        {
+            String[i++] = 'K';
+            NumK--;
+        }
+        String[i++]='K';
+        String[i++] = 'O';
+        NumO--;
+        D = Dist;
+        excess--;
+    }
+    while (i < n)
+    {
+        while (D--)
+        {
+            String[i++] = 'K';
+            NumK--;
+        }
+        if (i < n)
+        {
+            String[i++] = 'O';
+            NumO--;
+        }
+        D = Dist;
+    }
+    printf("%s\n", String);
+    return 0;
+}
+
+9)
+#include <stdio.h>
+#include<math.h>
+
+int main(void)
+{
+    int m,k;
+    scanf("%d",&m);
+    scanf("%d",&k);
+    long long lowest = -1; 
+    long long highest = -1;
+    for(long long i = pow(10,m-1);i<pow(10,m);i++)
+    {
+        long long num = i;
+        int sum=0;
+        while(num>0)
+        {
+            sum += num %10;
+            num = num/10;
+            if(sum>k)
+                break;
+        }
+        if(sum == k)
+        {
+            if(i>highest)
+                highest = i;
+            if(lowest == -1)
+                lowest = i;
+            if(i==power(10,m-1))
+                break;
+        }
+    }
+    printf("%lld %lld",lowest,highest);
+
+}
+
+10)
+#include <stdio.h>
+
+int main()
+{
+    int n, m;
+    scanf("%d %d", &n, &m);
+    char board[n][m + 1];
+    for (int i = 0; i < n; i++)
+        scanf("%s", board[i]);
+    for (int j = 0; j < m; j++) 
+    {
+        int empty = n - 1;
+        for (int i = n - 1; i >= 0; i--)
+        {
+            if (board[i][j] == '*')
+            {
+                board[i][j] = '.';
+                board[empty][j] = '*';
+                empty--;
+            }
+            else if (board[i][j] == 'o')
+                empty = i - 1;
+        }
+    }
+    for (int i = 0; i < n; i++)
+        printf("%s\n", board[i]);
+    return 0;
+}
