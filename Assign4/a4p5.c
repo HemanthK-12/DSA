@@ -8,7 +8,7 @@ ll solve(ll k, ll l, ll r, char *s, ll index, ll temp)
 {
     if (index == strlen(s))
     {
-        if (k == 0 && temp>0 && temp<=r) 
+        if (k == 0 && temp>=l && temp<=r)
             return 1;
         return 0;
     }
@@ -36,12 +36,11 @@ ll solve(ll k, ll l, ll r, char *s, ll index, ll temp)
     }
     return take + notTake;
 }
-
 int main()
 {
     ll n, k, l, r;
     scanf("%lld %lld %lld %lld", &n, &k, &l, &r);
-    char *s = (char *)malloc((n + 1) * sizeof(char));
+    char s[n];
     scanf("%s", s);
     for (ll i = 0; i < n; i++)
     {
@@ -49,9 +48,8 @@ int main()
         if (ch >= '0' && ch <= '9')
         {
             int num = ch - '0';
-            k = k - num;
+            k -= num;
         }
     }
     printf("%lld\n", solve(k, l, r, s, 0, 0));
-    free(s);
 }
