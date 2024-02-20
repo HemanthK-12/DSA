@@ -4,7 +4,8 @@ struct node{
     int data;
     struct node  *next;
 }*first=NULL,*second=NULL,*third=NULL;
-void create(int a[],int n){
+void create(int a[],int n)
+{
     struct node *t,*last;
     first=(struct node *)malloc(sizeof(struct node));
     first->data=a[0];
