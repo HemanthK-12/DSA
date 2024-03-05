@@ -1,0 +1,486 @@
+1)
+#include <stdio.h>
+void sort_indices(int arr[], int n, int exp, int k)
+{
+    int temp[n],count[16]={0};
+    for (int i = 0; i < n; i++)
+        count[(arr[i] / exp) % 16]++;
+    for (int i = 1; i < 16; i++)
+        count[i] += count[i - 1];
+    for (int i = n - 1; i >= 0; i--)
+    {
+        temp[count[(arr[i] / exp) % 16] - 1] = arr[i];
+        count[(arr[i] / exp) % 16]--;
+    }
+    for (int i = 0; i < n; i++)
+        arr[i] = temp[i];
+    if (k == 0)
+        for (int i = 0; i < n; i++)
+            printf("%x ", arr[i]);
+}
+void radixsort(int arr[], int n, int k)
+{
+    int max = arr[0];
+    for (int i = 1; i < n; i++)
+        if (arr[i] > max)
+            max = arr[i];
+    for (int i = 1; max / i > 0; i *= 16)
+        if(k>0)
+            sort_indices(arr, n, i, --k);
+}
+int main()
+{
+    int n, k;
+    scanf("%d %d", &n, &k);
+    int a[n];
+    for (int i = 0; i < n; i++)
+        scanf("%x", &a[i]);
+    radixsort(a, n, k);
+    return 0;
+}
+
+2)
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct Node
+{
+    float data;
+    struct Node *next;
+} Node;
+Node *insert(Node *head, float data)
+{
+    Node *node = (Node *)malloc(sizeof(Node));
+    node->data = data;
+    node->next = NULL;
+    if (!head)
+        return node;
+    if (data < head->data)
+        node->next = head;
+        return node;
+    Node *current = head;
+    while (current->next && current->next->data < data)
+        current = current->next;
+    node->next = current->next;
+    current->next = node;
+    return head;
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    Node *buckets[n];
+    int counts[n];
+    for (int i = 0; i < n; i++)
+    {
+        buckets[i] = NULL;
+        counts[i] = 0;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        float num;
+        scanf("%f", &num);
+
+        int index = num * n;
+        buckets[index] = insert(buckets[index], num);
+        counts[index]++;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        Node *current = buckets[i];
+        while (current)
+        {
+            printf("%.1f ", current->data);
+            current = current->next;
+        }
+    }
+    printf("\n");
+    for (int i = 0; i < n; i++)
+        printf("%d ", counts[i]);
+    return 0;
+}
+
+3)
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct {
+    int value;
+    int index;
+} Element;
+int compare(const void* a, const void* b)
+{
+    Element* elementA = (Element*)a;
+    Element* elementB = (Element*)b;
+    return elementA->value - elementB->value;
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    Element elements[n];
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%d", &elements[i].value);
+        elements[i].index = i + 1;
+    }
+    qsort(elements, n, sizeof(Element), compare);
+    for (int i = 0; i < n; i++)
+        printf("%d ", elements[i].value);
+    printf("\n");
+    for (int i = 0; i < n; i++)
+        printf("%d ", elements[i].index);
+    return 0;
+}
+
+4)
+#include <stdio.h>
+int main()
+{
+    int n, k;
+    scanf("%d %d", &n, &k);
+    int arr[n],exists[n+1];
+    for (int i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+    for (int i = 0; i < n+1; i++)
+        exists[i] = 0;
+    for (int i = 0; i < n; i++)
+        exists[arr[i]] = 1;
+    int l = 1, r = n;
+    while (l < r)
+    {
+        if (!exists[l] && !exists[r] && l + r == k)
+        {
+            printf("yes\n");
+            return 0;
+        }
+        if (l + r < k)
+            l++;
+        else
+            r--;
+    }
+    printf("no\n");
+    return 0;
+}
+
+5)
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct
+{
+    int first;
+    int second;
+} Pair;
+int compare(const void *a, const void *b)
+{
+    Pair *pairA = (Pair *)a;
+    Pair *pairB = (Pair *)b;
+    if (pairA->first != pairB->first)
+        return pairA->first - pairB->first;
+    else
+        return pairA->second - pairB->second;
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    Pair pairs[n];
+    for (int i = 0; i < n; i++)
+        scanf("%d", &pairs[i].first);
+    for (int i = 0; i < n; i++)
+        scanf("%d", &pairs[i].second);
+    qsort(pairs, n, sizeof(Pair), compare);
+    for (int i = 0; i < n; i++)
+        printf("%d ", pairs[i].first);
+    printf("\n");
+    for (int i = 0; i < n; i++)
+        printf("%d ", pairs[i].second);
+    return 0;
+}
+
+6)
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct
+{
+    int val;
+    int count;
+    int first_idx;
+} Element;
+int compare(const void *a, const void *b)
+{
+    Element *elemA = (Element *)a;
+    Element *elemB = (Element *)b;
+    if (elemA->count != elemB->count)
+        return elemA->count - elemB->count;
+    else
+        return elemA->first_idx - elemB->first_idx;
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    int arr[n];
+    Element elements[n + 1];
+    for (int i = 0; i <= n; i++)
+    {
+        elements[i].val = i;
+        elements[i].count = 0;
+        elements[i].first_idx = n;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%d", &arr[i]);
+        elements[arr[i]].count++;
+        if (elements[arr[i]].first_idx == n)
+            elements[arr[i]].first_idx = i;
+    }
+    qsort(elements, n + 1, sizeof(Element), compare);
+    int idx = 0;
+    for (int i = 0; i <= n; i++)
+        for (int j = 0; j < elements[i].count; j++)
+            arr[idx++] = elements[i].val;
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    return 0;
+}
+
+7)
+#include <stdio.h>
+#include <limits.h>
+typedef struct Val
+{
+    int abs_pos;
+    int ini_val;
+} Val;
+void swap(Val *a, Val *b)
+{
+    Val tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+void moveLefts(Val a[], int n)
+{
+    for (int i = 0; i < n; i++)
+        for (int j = i + 1; j < n; j++)
+            if (a[i].abs_pos == a[j].abs_pos && a[i].ini_val > a[j].ini_val)
+                swap(&a[i], &a[j]);
+}
+void heapify(Val a[], int n, int i)
+{
+    int smallest = i;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
+    if (l < n && a[l].abs_pos < a[smallest].abs_pos)
+        smallest = l;
+    if (r < n && a[r].abs_pos < a[smallest].abs_pos)
+        smallest = r;
+    if (smallest != i)
+    {
+        swap(&a[i], &a[smallest]);
+        heapify(a, n, smallest);
+    }
+}
+int main()
+{
+    int n, k, x;
+    scanf("%d %d %d", &n,&k,&x);
+    Val a[n];
+    for (int i = 0; i < n; i++)
+    {
+        int s;
+        scanf("%d", &s);
+        a[i].ini_val = s;
+        a[i].abs_pos = (s < x) ? x - s : s - x;
+    }
+    for (int i = n - 1; i >= 0; i--)
+        heapify(a, n, i);
+    moveLefts(a, n);
+    for (int i = 0; i < k; i++)
+    {
+        printf("%d ", a[0].ini_val);
+        a[0].abs_pos = INT_MAX;
+        heapify(a, n, 0);
+        moveLefts(a, n);
+    }
+}
+
+8)
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct
+{
+    int dps;
+    int synergy;
+} Character;
+Character heap[100000];
+int heapSize = 0;
+void push(Character value)
+{
+    int i = heapSize++;
+    while (i > 0)
+    {
+        int parent = (i - 1) / 2;
+        if (heap[parent].dps >= value.dps)
+            break;
+        heap[i] = heap[parent];
+        i = parent;
+    }
+    heap[i] = value;
+}
+Character pop()
+{
+    Character ret = heap[0];
+    Character value = heap[--heapSize];
+    int i = 0;
+    while (i * 2 + 1 < heapSize)
+    {
+        int child = i * 2 + 1;
+        if (child + 1 < heapSize && heap[child].dps < heap[child + 1].dps)
+            child++;
+        if (heap[child].dps <= value.dps)
+            break;
+        heap[i] = heap[child];
+        i = child;
+    }
+    heap[i] = value;
+    return ret;
+}
+int main()
+{
+    int n, k;
+    scanf("%d %d", &n, &k);
+    Character characters[n];
+    for (int i = 0; i < n; i++)
+        scanf("%d", &characters[i].dps);
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%d", &characters[i].synergy);
+        if (characters[i].synergy > 0)
+            push(characters[i]);
+    }
+    long long goodness = 0;
+    while (heapSize > 0 && k > 0)
+    {
+        Character top = pop();
+        goodness += top.dps + top.synergy;
+        k--;
+    }
+    printf("%lld", goodness);
+    return 0;
+}
+
+9)
+#include <stdio.h>
+void swap(int *a, int *b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+void heapify(int a[], int n, int i)
+{
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+    if (left < n && a[left] > a[largest])
+        largest = left;
+    if (right < n && a[right] > a[largest])
+        largest = right;
+    if (largest != i)
+    {
+        swap(&a[i], &a[largest]);
+        heapify(a, n, largest);
+    }
+}
+void maxheap(int a[], int n)
+{
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(a, n, i);
+}
+int ans(char a[], int n, int k)
+{
+    int count[26];
+    for (int i = 0; i < 26; i++)
+        count[i] = 0;
+    for (int i = 0; i < n; i++)
+        count[a[i] - 'a']++;
+    maxheap(count, 26);
+    for (int i = 0; i < n - k; i++)
+    {
+        count[0] = count[0] - 1;
+        heapify(count, 26, 0);
+    }
+    int minsum = 0;
+    for (int i = 0; i < 26; i++)
+        minsum += (count[i] * count[i]);
+    return minsum;
+}
+int main()
+{
+    int n, k;
+    scanf("%d %d", &n, &k);
+    char a[n + 1];
+    for (int i = 0; i < n; i++)
+        scanf(" %c", &a[i]);
+    printf("%d", ans(a, n, k));
+}
+
+10)
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct
+{
+    int hp;
+    int index;
+} Character;
+Character heap[100000];
+int heapSize = 0;
+void push(Character value)
+{
+    int i = heapSize++;
+    while (i > 0)
+    {
+        int parent = (i - 1) / 2;
+        if (heap[parent].hp <= value.hp)
+            break;
+        heap[i] = heap[parent];
+        i = parent;
+    }
+    heap[i] = value;
+}
+Character pop()
+{
+    Character ret = heap[0];
+    Character value = heap[--heapSize];
+    int i = 0;
+    while (i * 2 + 1 < heapSize)
+    {
+        int child = i * 2 + 1;
+        if (child + 1 < heapSize && heap[child].hp > heap[child + 1].hp)
+            child++;
+        if (heap[child].hp >= value.hp)
+            break;
+        heap[i] = heap[child];
+        i = child;
+    }
+    heap[i] = value;
+    return ret;
+}
+int main()
+{
+    int n, x;
+    scanf("%d %d", &n, &x);
+    for (int i = 0; i < n; i++)
+    {
+        int hp;
+        scanf("%d", &hp);
+        if (hp < x)
+        {
+            Character character = {hp, i + 1};
+            push(character);
+        }
+    }
+    printf("%d\n", heapSize);
+    while (heapSize > 0)
+        printf("%d ", pop().index);
+    return 0;
+}
