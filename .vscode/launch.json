@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/heman/OneDrive/Desktop/BITS/Coding/DSA/Assign4",
-      "program": "c:/Users/heman/OneDrive/Desktop/BITS/Coding/DSA/Assign4/build/Debug/outDebug",
+      "cwd": "c:/Users/heman/OneDrive/Desktop/BITS/Coding/DSA/Assign7",
+      "program": "c:/Users/heman/OneDrive/Desktop/BITS/Coding/DSA/Assign7/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
