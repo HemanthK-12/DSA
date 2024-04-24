@@ -39,7 +39,7 @@ bool isValid(char* s)
             push(a);
         else 
         {
-            if (top == NULL) // If stack is empty, the string is not valid
+            if (top == NULL) 
                 return false;
             char b = (char) top->data;
             if ((a == '}' && b == '{') || (a == ']' && b == '[') || (a == ')' && b == '('))
