@@ -48,7 +48,10 @@ bool isValid(char* s)
                 return false;
         }
     }
-    if (top==NULL)
+    bool res=(top==NULL);
+    while(top!=NULL)
+        pop();
+    if (res)
         return true;
     else
         return false;
