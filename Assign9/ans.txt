@@ -1,0 +1,714 @@
+1)
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+typedef struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
+} Node;
+Node *newNode(int data)
+{
+    Node *node = (Node *)malloc(sizeof(Node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+Node *insertLevelOrder(int arr[], Node *root, int i, int n)
+{
+    if (i < n)
+    {
+        Node *temp = newNode(arr[i]);
+        root = temp;
+        root->left = insertLevelOrder(arr, root->left, 2 * i + 1, n);
+        root->right = insertLevelOrder(arr, root->right, 2 * i + 2, n);
+    }
+    return root;
+}
+int maxPathSumUtil(Node *root, int *res)
+{
+    if (root == NULL)
+        return 0;
+    int left = maxPathSumUtil(root->left, res);
+    int right = maxPathSumUtil(root->right, res);
+    int max_single = MAX(MAX(left, right) + root->data, root->data);
+    int max_top = MAX(max_single, left + right + root->data);
+    *res = MAX(*res, max_top);
+    return max_single;
+}
+int maxPathSum(Node *root)
+{
+    int res = INT_MIN;
+    maxPathSumUtil(root, &res);
+    return res;
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+    Node *root = insertLevelOrder(arr, root, 0, n);
+    printf("Max path sum is %d", maxPathSum(root));
+    return 0;
+}
+
+2)
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct TreeNode
+{
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+} TreeNode;
+TreeNode* CreateNode(int value)
+{
+    struct TreeNode* node = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    node->val = value;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+TreeNode* BuildTree(int n, int A[])
+{
+    if(n<=0)
+        return NULL;
+    TreeNode** Node = (TreeNode**)malloc(n * sizeof(TreeNode));
+    for(int i=0; i<n; i++)
+    {
+        if(A[i] == -1)
+            Node[i] = NULL;
+        else
+            Node[i] = CreateNode(A[i]);
+    }
+    TreeNode* root = Node[0];
+    int count = 0;
+    for(int i=0; i<n; i++)
+    {
+        if(Node[i] == NULL)
+            count++;
+        if(Node[i])
+        {
+            int leftIndex = 2*i + 1 - 2*count;
+            int rightIndex = 2*i + 2 - 2*count;
+            if(leftIndex < n)
+                Node[i]->left = Node[leftIndex];
+            if(rightIndex < n)
+                Node[i]->right = Node[rightIndex];
+        }
+    }
+    free(Node);
+    return root;
+}
+int isIdentical(TreeNode* rootA, TreeNode* rootB)
+{
+    if(rootA == NULL && rootB == NULL)
+        return 1;
+    if(rootA == NULL || rootB == NULL)
+        return 0;
+    if(rootA->val != rootB->val)
+        return 0;
+    return isIdentical(rootA->left, rootB->left) && isIdentical(rootA->right, rootB->right);
+}
+int isSubtree(TreeNode* rootA, TreeNode* rootB)
+{
+    if(rootB == NULL)
+        return 1;
+    if(rootA == NULL)
+        return 0;
+    if(isIdentical(rootA, rootB))
+        return 1;
+    return isSubtree(rootA->left, rootB) || isSubtree(rootA->right, rootB);
+}
+void main()
+{
+    int n, m;
+    scanf("%d %d",&n,&m);
+    int A[n];
+    for(int i=0; i<n; i++)
+        scanf("%d",&A[i]);
+    int B[m];
+    for(int i=0; i<m; i++)
+        scanf("%d",&B[i]);
+    TreeNode* rootA = BuildTree(n, A);
+    TreeNode* rootB = BuildTree(m, B);
+    if(isSubtree(rootA, rootB))
+        printf("WIN");
+    else
+        printf("LOSS");
+}
+
+3)
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+} Node;
+
+Node* newNode(int data) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+Node* insertLevelOrder(int arr[], Node* root, int i, int n) {
+    if (i < n) {
+        if (arr[i] == -1) {
+            return NULL;
+        }
+        Node* temp = newNode(arr[i]);
+        root = temp;
+        root->left = insertLevelOrder(arr, root->left, 2 * i + 1, n);
+        root->right = insertLevelOrder(arr, root->right, 2 * i + 2, n);
+    }
+    return root;
+}
+
+Node* cutTree(Node* root, int k) {
+    if (root == NULL) return NULL;
+    if (root->data == k) return NULL;
+    root->left = cutTree(root->left, k);
+    root->right = cutTree(root->right, k);
+    return root;
+}
+
+int height(Node* node) {
+    if (node == NULL) return 0;
+    int leftHeight = height(node->left);
+    int rightHeight = height(node->right);
+    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+}
+
+int main() {
+    int n, k;
+    scanf("%d %d", &n, &k);
+    int arr[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    Node* root = insertLevelOrder(arr, root, 0, n);
+    root = cutTree(root, k);
+    printf("%d", height(root));
+    return 0;
+}
+
+4)
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node* left;
+    struct node* right;
+};
+
+struct queue {
+    struct node* data;
+    struct queue* next;
+};
+
+struct queue* createQueueNode(struct node* data) {
+    struct queue* newNode = (struct queue*)malloc(sizeof(struct queue));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void enqueue(struct queue** front, struct queue** rear, struct node* data) {
+    struct queue* newNode = createQueueNode(data);
+    if (*rear) {
+        (*rear)->next = newNode;
+    }
+    *rear = newNode;
+    if (!*front) {
+        *front = *rear;
+    }
+}
+
+struct node* dequeue(struct queue** front, struct queue** rear) {
+    if (!*front) {
+        return NULL;
+    }
+    struct queue* temp = *front;
+    struct node* data = temp->data;
+    *front = (*front)->next;
+    if (!*front) {
+        *rear = NULL;
+    }
+    free(temp);
+    return data;
+}
+
+int search(int arr[], int strt, int end, int value) {
+    int i;
+    for (i = strt; i <= end; i++) {
+        if (arr[i] == value)
+            return i;
+    }
+}
+
+struct node* newNode(int data) {
+    struct node* node = (struct node*)malloc(sizeof(struct node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+struct node* buildTree(int in[], int pre[], int inStrt, int inEnd) {
+    static int preIndex = 0;
+    if (inStrt > inEnd)
+        return NULL;
+    struct node* tNode = newNode(pre[preIndex++]);
+    if (inStrt == inEnd)
+        return tNode;
+    int inIndex = search(in, inStrt, inEnd, tNode->data);
+    tNode->left = buildTree(in, pre, inStrt, inIndex - 1);
+    tNode->right = buildTree(in, pre, inIndex + 1, inEnd);
+    return tNode;
+}
+
+void printLevelOrder(struct node* root) {
+    if (root == NULL) {
+        return;
+    }
+    struct queue* front = NULL;
+    struct queue* rear = NULL;
+    enqueue(&front, &rear, root);
+    while (front) {
+        struct node* temp = dequeue(&front, &rear);
+        printf("%d ", temp->data);
+        if (temp->left) {
+            enqueue(&front, &rear, temp->left);
+        } else if (temp->right) {  // If left child is NULL and right child is not NULL
+            printf("-1 ");
+        }
+        if (temp->right) {
+            enqueue(&front, &rear, temp->right);
+        } else if (temp->left) {  // If right child is NULL and left child is not NULL
+            printf("-1 ");
+        }
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter the size of arrays: ");
+    scanf("%d", &n);
+    int in[n], pre[n];
+    printf("Enter the Inorder traversal of the tree: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &in[i]);
+    }
+    printf("Enter the Preorder traversal of the tree: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &pre[i]);
+    }
+    struct node* root = buildTree(in, pre, 0, n - 1);
+    printf("Level order traversal of the constructed tree is \n");
+    printLevelOrder(root);
+    return 0;
+}
+
+5)
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+struct node {
+    int data;
+    struct node* left;
+    struct node* right;
+};
+
+struct queue {
+    struct node* data;
+    struct queue* next;
+};
+
+struct queue* createQueueNode(struct node* data) {
+    struct queue* newNode = (struct queue*)malloc(sizeof(struct queue));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+void enqueue(struct queue** front, struct queue** rear, struct node* data) {
+    struct queue* newNode = createQueueNode(data);
+    if (*rear) {
+        (*rear)->next = newNode;
+    }
+    *rear = newNode;
+    if (!*front) {
+        *front = *rear;
+    }
+}
+
+struct node* dequeue(struct queue** front, struct queue** rear) {
+    if (!*front) {
+        return NULL;
+    }
+    struct queue* temp = *front;
+    struct node* data = temp->data;
+    *front = (*front)->next;
+    if (!*front) {
+        *rear = NULL;
+    }
+    free(temp);
+    return data;
+}
+
+struct node* newNode(int data) {
+    struct node* node = (struct node*)malloc(sizeof(struct node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+struct node* constructBST(int post[], int* postIndex, int key, int min, int max, int size) {
+    if (*postIndex < 0) {
+        return NULL;
+    }
+    struct node* root = NULL;
+    if (key > min && key < max) {
+        root = newNode(key);
+        *postIndex = *postIndex - 1;
+        if (*postIndex >= 0) {
+            root->right = constructBST(post, postIndex, post[*postIndex], key, max, size);
+            root->left = constructBST(post, postIndex, post[*postIndex], min, key, size);
+        }
+    }
+    return root;
+}
+
+struct node* constructTree(int post[], int size) {
+    int postIndex = size - 1;
+    return constructBST(post, &postIndex, post[postIndex], INT_MIN, INT_MAX, size);
+}
+
+void printLevelOrder(struct node* root) {
+    struct queue* front = NULL;
+    struct queue* rear = NULL;
+    enqueue(&front, &rear, root);
+    while (front) {
+        struct node* temp = dequeue(&front, &rear);
+        printf("%d ", temp->data);
+        if (temp->left) {
+            enqueue(&front, &rear, temp->left);
+        } else if (temp->right) {
+            printf("-1 ");
+        }
+        if (temp->right) {
+            enqueue(&front, &rear, temp->right);
+        } else if (temp->left) {
+            printf("-1 ");
+        }
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter the size of array: ");
+    scanf("%d", &n);
+    int post[n];
+    printf("Enter the Postorder traversal of the tree: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &post[i]);
+    }
+    struct node* root = constructTree(post, n);
+    printf("Level order traversal of the constructed tree is \n");
+    printLevelOrder(root);
+    return 0;
+}
+
+6)
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node* left;
+    struct node* right;
+};
+
+struct node* newNode(int data) {
+    struct node* node = (struct node*)malloc(sizeof(struct node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+struct node* insert(struct node* node, int data) {
+    if (node == NULL) {
+        return newNode(data);
+    }
+    if (data < node->data) {
+        node->left = insert(node->left, data);
+    } else if (data > node->data) {
+        node->right = insert(node->right, data);
+    }
+    return node;
+}
+
+void kthLargestUtil(struct node* root, int k, int* c) {
+    if (root == NULL || *c >= k) {
+        return;
+    }
+    kthLargestUtil(root->right, k, c);
+    *c = *c + 1;
+    if (*c == k) {
+        printf("%d ", root->data);
+        return;
+    }
+    kthLargestUtil(root->left, k, c);
+}
+
+void kthLargest(struct node* root, int k) {
+    int c = 0;
+    kthLargestUtil(root, k, &c);
+}
+
+int main() {
+    int n, k;
+    printf("Enter the size of array and k: ");
+    scanf("%d %d", &n, &k);
+    struct node* root = NULL;
+    printf("Enter the elements of the array: ");
+    for (int i = 0; i < n; i++) {
+        int data;
+        scanf("%d", &data);
+        root = insert(root, data);
+    }
+    printf("The kth largest element is: ");
+    kthLargest(root, k);
+    return 0;
+}
+
+7)
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+} Node;
+
+Node* newNode(int data) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    node->data = data;
+    node->left = node->right = NULL;
+    return node;
+}
+
+Node* buildTree(int arr[], int n, int i) {
+    if (i >= n || arr[i] == -1) return NULL;
+    Node* node = newNode(arr[i]);
+    node->left = buildTree(arr, n, 2*i + 1);
+    node->right = buildTree(arr, n, 2*i + 2);
+    return node;
+}
+
+Node* findLCA(Node* root, int a, int b) {
+    if (root == NULL) return NULL;
+    if (root->data == a || root->data == b) return root;
+    Node* left = findLCA(root->left, a, b);
+    Node* right = findLCA(root->right, a, b);
+    if (left && right) return root;
+    return (left != NULL) ? left : right;
+}
+
+int main() {
+    int n, A, B;
+    scanf("%d %d %d", &n, &A, &B);
+    int* arr = (int*)malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    Node* root = buildTree(arr, n, 0);
+    Node* lca = findLCA(root, A, B);
+    printf("%d\n", lca->data);
+    free(arr);
+    return 0;
+}
+
+8)
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+} Node;
+
+Node* newNode(int data) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    node->data = data;
+    node->left = node->right = NULL;
+    return node;
+}
+
+Node* buildTree(int arr[], int n, int i) {
+    if (i >= n || arr[i] == -1) return NULL;
+    Node* node = newNode(arr[i]);
+    node->left = buildTree(arr, n, 2*i + 1);
+    node->right = buildTree(arr, n, 2*i + 2);
+    return node;
+}
+
+int sumOfDistances(Node* root, int depth) {
+    if (root == NULL) return 0;
+    return depth + sumOfDistances(root->left, depth + 1) + sumOfDistances(root->right, depth + 1);
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    int* arr = (int*)malloc(n * sizeof(int));
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    Node* root = buildTree(arr, n, 0);
+    int sum = sumOfDistances(root, 0);
+    printf("%d\n", sum);
+    free(arr);
+    return 0;
+}
+
+9)
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+} Node;
+
+Node* newNode(int data) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    node->data = data;
+    node->left = node->right = NULL;
+    return node;
+}
+
+Node* insert(Node* node, int data) {
+    if (node == NULL) return newNode(data);
+    if (data < node->data)
+        node->left  = insert(node->left, data);
+    else if (data > node->data)
+        node->right = insert(node->right, data);   
+    return node;
+}
+
+void printLevelOrder(Node* root) {
+    int h = height(root);
+    int i;
+    for (i=1; i<=h; i++)
+        printGivenLevel(root, i);
+}
+
+void printGivenLevel(Node* root, int level) {
+    if (root == NULL) return;
+    if (level == 1)
+        printf("%d ", root->data);
+    else if (level > 1) {
+        printGivenLevel(root->left, level-1);
+        printGivenLevel(root->right, level-1);
+    }
+}
+
+int height(Node* node) {
+    if (node==NULL) return 0;
+    else {
+        int lheight = height(node->left);
+        int rheight = height(node->right);
+        if (lheight > rheight) return(lheight+1);
+        else return(rheight+1);
+    }
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    Node* root = NULL;
+    for (int i = 0; i < n; i++) {
+        int data;
+        scanf("%d", &data);
+        root = insert(root, data);
+    }
+    printLevelOrder(root);
+    return 0;
+}
+
+10)
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+} Node;
+
+Node* newNode(int data) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    node->data = data;
+    node->left = node->right = NULL;
+    return node;
+}
+
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+int height(Node* node) {
+    if (node == NULL) return 0;
+    return 1 + max(height(node->left), height(node->right));
+}
+
+int diameter(Node* tree) {
+    if (tree == NULL) return 0;
+    int lheight = height(tree->left);
+    int rheight = height(tree->right);
+    int ldiameter = diameter(tree->left);
+    int rdiameter = diameter(tree->right);
+    return max(lheight + rheight, max(ldiameter, rdiameter));
+}
+
+Node* insert(Node* node, int data) {
+    if (node == NULL) return newNode(data);
+    if (data < node->data)
+        node->left  = insert(node->left, data);
+    else if (data > node->data)
+        node->right = insert(node->right, data);   
+    return node;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    Node* root = NULL;
+    for (int i = 0; i < n; i++) {
+        int data;
+        scanf("%d", &data);
+        if (data != -1) {
+            root = insert(root, data);
+        }
+    }
+    printf("%d\n", diameter(root));
+    return 0;
+}

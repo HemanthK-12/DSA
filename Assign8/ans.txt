@@ -1,0 +1,651 @@
+1)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+struct Stack
+{
+    int top;
+    unsigned capacity;
+    char *array;
+};
+struct Stack *createStack(unsigned capacity)
+{
+    struct Stack *stack = (struct Stack *)malloc(sizeof(struct Stack));
+    if (!stack)
+        return NULL;
+    stack->top = -1;
+    stack->capacity = capacity;
+    stack->array = (char *)malloc(stack->capacity * sizeof(char));
+    return stack;
+}
+int isEmpty(struct Stack *stack)
+{
+    return stack->top == -1;
+}
+void push(struct Stack *stack, int item)
+{
+    if (stack->top == stack->capacity - 1)
+        return;
+    stack->array[++stack->top] = item;
+}
+int pop(struct Stack *stack)
+{
+   return (isEmpty(stack))?-1:stack->array[stack->top--];
+}
+int isMatchingPair(char character1, char character2)
+{
+    return ((character1 == '(' && character2 == ')')||(character1 == '{' && character2 == '}')||(character1 == '[' && character2 == ']'))?1:0;
+}
+int areBracketsBalanced(char exp[])
+{
+    int i = 0;
+    struct Stack *stack = createStack(strlen(exp));
+    if (!stack)
+        return -1;
+    while (exp[i])
+    {
+        if (exp[i] == '{' || exp[i] == '(' || exp[i] == '[')
+            push(stack, exp[i]);
+        if (exp[i] == '}' || exp[i] == ')' || exp[i] == ']')
+            if ((isEmpty(stack))||(!isMatchingPair(pop(stack), exp[i])))
+                return 0;
+        i++;
+    }
+    return (isEmpty(stack))?1:0;
+}
+int main()
+{
+    char exp[10000];
+    printf("Enter the expression: ");
+    scanf("%[^\n]", exp);
+    getchar(); // consume newline character
+    if (areBracketsBalanced(exp))
+        printf("Balanced \n");
+    else
+        printf("Not Balanced \n");
+    return 0;
+}
+
+2)
+#include <stdio.h>
+#include <stdlib.h>
+void printKMax(int arr[], int n, int k)
+{
+
+    int *Qi = (int *)malloc(sizeof(int) * n);
+    int front = 0,rear = -1,i;
+    for (i = 0; i < k; ++i)
+    {
+        while (front <= rear && arr[i] >= arr[Qi[rear]])
+            rear--;
+        Qi[++rear] = i;
+    }
+    for (; i < n; ++i)
+    {
+        printf("%d ", arr[Qi[front]]);
+        while (front <= rear && Qi[front] <= i - k)
+            front++;
+        while (front <= rear && arr[i] >= arr[Qi[rear]])
+            rear--;
+        Qi[++rear] = i;
+    }
+    printf("%d\n", arr[Qi[front]]);
+}
+int main()
+{
+    int n, k, i;
+    scanf("%d %d", &n, &k);
+    int arr[n];
+    for (i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+    printKMax(arr, n, k);
+    return 0;
+}
+
+3)
+#include <stdio.h>
+#include <stdlib.h>
+#define MOD 1000000007
+struct Stack
+{
+    int top;
+    unsigned capacity;
+    int *array;
+};
+struct Stack *createStack(unsigned capacity)
+{
+    struct Stack *stack = (struct Stack *)malloc(sizeof(struct Stack));
+    if (!stack)
+        return NULL;
+    stack->top = -1;
+    stack->capacity = capacity;
+    stack->array = (int *)malloc(stack->capacity * sizeof(int));
+    return stack;
+}
+int isEmpty(struct Stack *stack)
+{
+    return stack->top == -1;
+}
+void push(struct Stack *stack, int item)
+{
+    if (stack->top == stack->capacity - 1)
+        return;
+    stack->array[++stack->top] = item;
+}
+int pop(struct Stack *stack)
+{
+   return (isEmpty(stack))?-1:stack->array[stack->top--];
+}
+int peek(struct Stack *stack)
+{
+    return (isEmpty(stack))?-1:stack->array[stack->top];
+}
+int sumOfMinima(int arr[], int n)
+{
+    struct Stack *stack = createStack(n);
+    int res = 0;
+    int leftSmaller[n], rightSmaller[n];
+    for (int i = 0; i < n; i++)
+    {
+        while (!isEmpty(stack) && arr[peek(stack)] >= arr[i])
+            pop(stack);
+        if (isEmpty(stack))
+            leftSmaller[i] = -1;
+        else
+            leftSmaller[i] = peek(stack);
+        push(stack, i);
+    }
+    while (!isEmpty(stack))
+        pop(stack);
+    for (int i = n - 1; i >= 0; i--)
+    {
+        while (!isEmpty(stack) && arr[peek(stack)] > arr[i])
+            pop(stack);
+        if (isEmpty(stack))
+            rightSmaller[i] = n;
+        else
+            rightSmaller[i] = peek(stack);
+        push(stack, i);
+    }
+    for (int i = 0; i < n; i++)
+        res = (res + arr[i] * (i - leftSmaller[i]) * (rightSmaller[i] - i)) % MOD;
+    return res;
+}
+int main()
+{
+    int n, i;
+    scanf("%d", &n);
+    int arr[n];
+    for (i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+    printf("%d", sumOfMinima(arr, n));
+    return 0;
+}
+
+4)
+#include <stdio.h>
+#include <stdlib.h>
+struct Stack
+{
+    int top;
+    unsigned capacity;
+    int *array;
+};
+struct Stack *createStack(unsigned capacity)
+{
+    struct Stack *stack = (struct Stack *)malloc(sizeof(struct Stack));
+    if (!stack)
+        return NULL;
+    stack->top = -1;
+    stack->capacity = capacity;
+    stack->array = (int *)malloc(stack->capacity * sizeof(int));
+    return stack;
+}
+int isEmpty(struct Stack *stack)
+{
+    return stack->top == -1;
+}
+void push(struct Stack *stack, int item)
+{
+    if (stack->top == stack->capacity - 1)
+        return;
+    stack->array[++stack->top] = item;
+}
+int pop(struct Stack *stack)
+{
+   return (isEmpty(stack))?-1:stack->array[stack->top--];
+}
+int peek(struct Stack *stack)
+{
+    return (isEmpty(stack))?-1:stack->array[stack->top];
+}
+int getMaxArea(int hist[], int n)
+{
+    struct Stack *stack = createStack(n);
+    int max_area = 0,tp,area_with_top;
+    int i = 0;
+    while (i < n)
+    {
+        if (isEmpty(stack) || hist[peek(stack)] <= hist[i])
+            push(stack, i++);
+        else
+        {
+            tp = pop(stack);
+            area_with_top = hist[tp] * (isEmpty(stack) ? i : i - peek(stack) - 1);
+            if (max_area < area_with_top)
+                max_area = area_with_top;
+        }
+    }
+    while (isEmpty(stack) == 0)
+    {
+        tp = pop(stack);
+        area_with_top = hist[tp] * (isEmpty(stack) ? i : i - peek(stack) - 1);
+        if (max_area < area_with_top)
+            max_area = area_with_top;
+    }
+    return max_area;
+}
+int main()
+{
+    int n, i;
+    scanf("%d", &n);
+    int hist[n];
+    for (i = 0; i < n; i++)
+        scanf("%d", &hist[i]);
+    printf("%d", getMaxArea(hist, n));
+    return 0;
+}
+
+5)
+#include <stdio.h>
+int main()
+{
+   int n, k;
+   scanf("%d %d",&n, &k);
+   char str1[n];
+   scanf("%s", str1);
+   char str2[n];
+   for (int i = 0; i < n; i++) {str2[i] = str1[i];}
+   int i = 0, tmp = k;
+   while (i < n - 1)
+   {
+       if (str2[i] > str2[i + 1] && tmp)
+       {
+           str2[i] = '_';
+           tmp--;
+       }
+       i++;
+   }
+   for (int i = n - 1; i >= 0; i--)
+   {
+       if (str2[i] != '_')
+       {
+           int j = i + 1;
+           while (j < n && str2[j] == '_')
+           {
+               str2[j] = str2[j - 1];
+               str2[j - 1] = '_';
+               j++;
+           }
+       }  
+    }
+   for (int i = k; i < n; i++) {
+       int a = str1[i] - '0';
+       int b = str2[i] - '0';
+       int ans = a - b;
+       str1[i] = ans + '0';
+   }
+   printf("%s", str1);
+   return 0;
+}
+
+6)
+#include <stdio.h>
+#include <stdlib.h>
+struct Stack
+{
+    int top;
+    unsigned capacity;
+    int *array;
+};
+struct Stack *createStack(unsigned capacity)
+{
+    struct Stack *stack = (struct Stack *)malloc(sizeof(struct Stack));
+    if (!stack)
+        return NULL;
+    stack->top = -1;
+    stack->capacity = capacity;
+    stack->array = (int *)malloc(stack->capacity * sizeof(int));
+    return stack;
+}
+int isEmpty(struct Stack *stack)
+{
+    return stack->top == -1;
+}
+void push(struct Stack *stack, int item)
+{
+    if (stack->top == stack->capacity - 1)
+        return;
+    stack->array[++stack->top] = item;
+}
+int pop(struct Stack *stack)
+{
+   return (isEmpty(stack))?-1:stack->array[stack->top--];
+}
+int peek(struct Stack *stack)
+{
+    return (isEmpty(stack))?-1:stack->array[stack->top];
+}
+void findNextWeights(int weights[], int n, int nextGreater[], int nextLesser[])
+{
+    struct Stack *stack = createStack(n);
+    for (int i = 0; i < n; i++)
+    {
+        while (!isEmpty(stack) && weights[i] > weights[peek(stack)])
+        {
+            int idx = pop(stack);
+            nextGreater[idx] = i - idx;
+        }
+        push(stack, i);
+    }
+    while (!isEmpty(stack))
+    {
+        int idx = pop(stack);
+        nextGreater[idx] = 0;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        while (!isEmpty(stack) && weights[i] < weights[peek(stack)])
+        {
+            int idx = pop(stack);
+            nextLesser[idx] = i - idx;
+        }
+        push(stack, i);
+    }
+    while (!isEmpty(stack))
+    {
+        int idx = pop(stack);
+        nextLesser[idx] = 0;
+    }
+}
+int main()
+{
+    int n;
+    scanf("%d", &n);
+    int weights[n];
+    for (int i = 0; i < n; i++)
+        scanf("%d", &weights[i]);
+    int nextGreater[n], nextLesser[n];
+    findNextWeights(weights, n, nextGreater, nextLesser);
+    for (int i = 0; i < n; i++)
+        printf("%d ", nextGreater[i]);
+    printf("\n");
+    for (int i = 0; i < n; i++)
+        printf("%d ", nextLesser[i]);
+    return 0;
+}
+
+7)
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct
+{
+    int top;
+    int data[1000000];
+    int min[1000000];
+} Stack;
+long long findSubarrays(int arr[], int n, int k)
+{
+    long long count = 0;
+    int left = 0, right = 0;
+    int max = arr[0], min = arr[0];
+    while (right < n)
+    {
+        if (arr[right] > max)
+            max = arr[right];
+        if (arr[right] < min)
+            min = arr[right];
+        while (max - min > k)
+        {
+            if (arr[left] == max)
+            {
+                max = arr[left + 1];
+                for (int i = left + 2; i <= right; i++)
+                    if (arr[i] > max)
+                        max = arr[i];
+            }
+            if (arr[left] == min)
+            {
+                min = arr[left + 1];
+                for (int i = left + 2; i <= right; i++)
+                    if (arr[i] < min)
+                        min = arr[i];
+            }
+            left++;
+        }
+        count += right - left + 1;
+        right++;
+    }
+    return count;
+}
+int main()
+{
+    int n, k;
+    scanf("%d %d", &n, &k);
+    int arr[n];
+    for (int i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+    printf("%lld\n", findSubarrays(arr, n, k));
+    return 0;
+}
+
+8)
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_SIZE 1000000
+typedef struct
+{
+    int top;
+    int data[MAX_SIZE];
+    int min[MAX_SIZE];
+} Stack;
+typedef struct
+{
+    int front, rear, size;
+    unsigned capacity;
+    int *array;
+    long long int sum;
+} Queue;
+Stack *createStack()
+{
+    Stack *stack = (Stack *)malloc(sizeof(Stack));
+    stack->top = -1;
+    return stack;
+}
+Queue *createQueue(unsigned capacity)
+{
+    Queue *queue = (Queue *)malloc(sizeof(Queue));
+    queue->capacity = capacity;
+    queue->front = queue->size = 0;
+    queue->rear = capacity - 1;
+    queue->array = (int *)malloc(queue->capacity * sizeof(int));
+    queue->sum = 0;
+    return queue;
+}
+void push(Stack *stack, int new_data)
+{
+    stack->data[++stack->top] = new_data;
+    if (stack->top == 0)
+        stack->min[stack->top] = new_data;
+    else
+        stack->min[stack->top] = new_data < stack->min[stack->top - 1] ? new_data : stack->min[stack->top - 1];
+}
+void enqueue(Queue *queue, int item)
+{
+    if (queue->size == queue->capacity)
+        return;
+    queue->rear = (queue->rear + 1) % queue->capacity;
+    queue->array[queue->rear] = item;
+    queue->size = queue->size + 1;
+    queue->sum += item;
+}
+void pop(Stack *stack)
+{
+    if (stack->top == -1)
+        return;
+    stack->top--;
+}
+void dequeue(Queue *queue)
+{
+    if (queue->size == 0)
+        return;
+    int item = queue->array[queue->front];
+    queue->sum -= item;
+    queue->front = (queue->front + 1) % queue->capacity;
+    queue->size = queue->size - 1;
+}
+int getMin(Stack *stack)
+{
+    return stack->min[stack->top];
+}
+int getAvg(Queue *queue)
+{
+    return queue->sum / queue->size;
+}
+int main()
+{
+    int q;
+    scanf("%d", &q);
+    Stack *stack = createStack();
+    Queue *queue = createQueue(MAX_SIZE);
+    while (q--)
+    {
+        int type;
+        scanf("%d", &type);
+        if (type == 1)
+        {
+            int x;
+            scanf("%d", &x);
+            push(stack, x);
+            enqueue(queue, x);
+        }
+        else if (type == 2)
+        {
+            pop(stack);
+            dequeue(queue);
+        }
+        else if (type == 3)
+            printf("%d %d\n", getMin(stack), getAvg(queue));
+    }
+    return 0;
+}
+
+9)
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+void swap(int *a, int *b)
+{
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+int partition(int arr[], int l, int r, int x)
+{
+    int i;
+    for (i = l; i < r; i++)
+        if (arr[i] == x)
+            break;
+    swap(&arr[i], &arr[r]);
+    i = l;
+    for (int j = l; j <= r - 1; j++)
+        if (arr[j] <= x)
+            swap(&arr[i++], &arr[j]);
+    swap(&arr[i], &arr[r]);
+    return i;
+}
+int compare(const void *a, const void *b)
+{
+    return (*(int *)a - *(int *)b);
+}
+int findMedian(int arr[], int n)
+{
+    qsort(arr, n, sizeof(int), compare);
+    return arr[n / 2];
+}
+int kthSmallest(int arr[], int l, int r, int k)
+{
+    if (k > 0 && k <= r - l + 1)
+    {
+        int n = r - l + 1;
+        int i, median[(n + 4) / 5];
+        for (i = 0; i < n / 5; i++)
+            median[i] = findMedian(arr + l + i * 5, 5);
+        if (i * 5 < n)
+        {
+            median[i] = findMedian(arr + l + i * 5, n % 5);
+            i++;
+        }
+        int medOfMed = (i == 1) ? median[i - 1] : kthSmallest(median, 0, i - 1, i / 2);
+        int pos = partition(arr, l, r, medOfMed);
+        if (pos - l == k - 1)
+            return arr[pos];
+        if (pos - l > k - 1)
+            return kthSmallest(arr, l, pos - 1, k);
+        return kthSmallest(arr, pos + 1, r, k - pos + l - 1);
+    }
+    return INT_MAX;
+}
+int main()
+{
+    int n, k;
+    scanf("%d %d", &n, &k);
+    int arr[n];
+    for (int i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+    printf("%d", kthSmallest(arr, 0, n - 1, n - k + 1));
+    return 0;
+}
+
+10)
+#include <stdio.h>
+#include <stdlib.h>
+void swap(int *a, int *b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+int partition(int arr[], int low, int high)
+{
+    int pivot = arr[high];
+    int i = (low - 1);
+    for (int j = low; j <= high - 1; j++)
+        if (arr[j] <= pivot)
+            swap(&arr[++i], &arr[j]);
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+int quickSelect(int arr[], int low, int high, int k)
+{
+    if (low == high)
+        return arr[low];
+    int pi = partition(arr, low, high);
+    int dist = pi - low + 1;
+    if (dist == k)
+        return arr[pi];
+    else if (dist > k)
+        return quickSelect(arr, low, pi - 1, k);
+    else
+        return quickSelect(arr, pi + 1, high, k - dist);
+}
+int main()
+{
+    int n, k;
+    scanf("%d %d", &n, &k);
+    int arr[n];
+    for (int i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+    printf("%d", quickSelect(arr, 0, n - 1, n - k + 1));
+    return 0;
+}

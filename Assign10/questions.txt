@@ -1,0 +1,19 @@
+Given a tree with nodes, each node containing a jar of peanut butter, find the maximum number of jars that can be collected by traversing the longest path between any two nodes. The input will be the number of edges in the tree and the edges between two nodes. The output should be the maximum number of jars that can be collected.
+
+Given a set of cities and roads connecting them, with each road having a cost to rebuild, find the minimum cost to rebuild the roads such that all cities can be visited. The input will be the number of roads and for each road, the two cities it connects and the cost to rebuild it. The output should be the minimum cost to rebuild the roads to connect all cities.
+
+Given a general tree, find the sum of depths of all subtree nodes in the tree. The input will be the number of edges in the tree and the edges between two nodes. The output should be the sum of depths of all subtree nodes in the tree.
+
+Given an unweighted, undirected graph of V nodes and E edges, a source node S, and a destination node D, find the shortest path from S to D in the graph. The input will be the number of vertices, edges, source node and destination node respectively. The output should be the shortest path from S to D.
+
+Given n courses and m requirements of the form “a should be completed before b”, find the order to complete the courses such that all of them are completed. The input will be the number of courses and number of requirements respectively. The output should be the order in which you complete all the courses, otherwise “IMPOSSIBLE”.
+
+Given a tree with n nodes, find the centroid of the tree such that when the centroid is appointed as the root node, each subtree has at most ⌊n/2⌋ nodes. The input will be the number of nodes in the tree and the edges between two nodes. The output should be the centroid of the tree with the minimum node value.
+
+Given n countries and m flight connections such that every country is somehow connected to every other country, find the lengths of the shortest routes from country 1 to every country. The input will be the number of countries and number of flights respectively. The output should be the lengths of shortest routes from 1 to all countries.
+
+Given a directed graph with negative cycles, find out which cycles among the graphs are negative cycles. The input will be the number of nodes and edges respectively. The output should be “YES” with the cycle order if a negative cycle exists, otherwise “NO”.
+
+Given a m*n grid which represents the map of 1’s (land) and 0’s (water), find out the total number of islands present in the map. The input will be the dimensions of the map. The output should be the number of islands.
+
+Given n nodes in an undirected graph, calculate the number of connected components in the graph. The input will be the number of nodes and edges. The output should be the number of connected components.
